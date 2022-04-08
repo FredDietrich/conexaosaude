@@ -1,0 +1,16 @@
+{% if logged_in %}
+
+    <form action="/logout" method="POST">
+        {% csrf_token %}
+        <h1>Você está logado!</h1>
+        <button type="submit">Sair</button>
+    </form>
+{% else %}
+    <h1>
+        Você não está logado!
+    </h1>
+{% endif %}
+<h2>Sitemap:</h2>
+<a href="/login">Login</a><br />
+<a href="/register">Cadastro</a><br />
+<a href="/twofactor">Validar código 2FA</a>

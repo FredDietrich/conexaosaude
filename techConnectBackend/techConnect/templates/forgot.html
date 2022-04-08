@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Recuperar Senha WIP</title>
+     <link rel="stylesheet" href="static/css/estilo.css">
+</head>
+<body>
+     <section >
+          <h1 style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" > <u>Recuperar meu acesso</u>   
+          </h1>
+          <h6>Para recuperar sua senha, enviaremos um código de validação ao e-mail cadastrado. WIP</h6>
+          <form action="/forgot" method="POST">
+               {% csrf_token %}
+               <label for="{{ form.email.id_for_label }}">Email: </label> <br/>
+               {{ form.email }} <br/>
+               <br/>
+               <label for="{{ form.date.id_for_label }}">Data de Nascimento: <label> <br>
+               {{ form.date }} 
+               <br/> <br/>
+               <button type="submit" style="font-size: 20px;">Enviar</button></a> <br> <br>
+               <label><a href="/login">Voltar</a> </label>
+          </form>
+     </section>
+</body>
+</html>

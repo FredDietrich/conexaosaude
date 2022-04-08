@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Validação</title>
+     <link rel="stylesheet" href="/static/css/estilo.css">
+</head>
+<body>
+     <section >
+          <h1 style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" > <u>Validar código</u>
+               
+          </h1>
+          {% if logged_in %}
+          <h6>Para validar seu acesso, digite o código que enviamos para o seu e-mail.</h6>
+               <form action="/twofactor" method="POST">
+                    {% csrf_token %}
+                    <label for="{{ form.code.id_for_label }}">Código: </label> <br/>
+               {{ form.code }}
+               <br/>{% if invalid_code %}
+                    <strong>Código Inválido</strong> <br/>
+               {% endif %}
+                    <br> <br>
+                    <button type="submit" style="font-size: 20px;  width: 110px;">Enviar</button> <br> <br>
+               </form>
+               {% if invalid_code %}
+               <form action="/newcode" method="POST">
+                    {% csrf_token %}
+                    <button type="submit">Reenviar código</button>
+               </form>
+               {% endif %}
+          {% else %}
+               <strong>Por favor faça login!</strong> <br/>
+          {% endif %}
+               <label a><a href="/login">Voltar</a> </label>
+     </section>
+</body>
+</html>
