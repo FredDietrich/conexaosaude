@@ -6,28 +6,25 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Login</title>
      <link rel="stylesheet" href="/static/css/estilo.css">
+     {% load bootstrap4 %}
+     {% bootstrap_css %}
+     {% bootstrap_javascript jquery='full' %}
 </head>
 <body>
-     <section >
-          <form action="/login" method="POST"><h1 style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <a class="navbar-brand" href="/">Conexão Saúde</a>
+          <span class="navbar-text"><a href="/user">Área do usuário</a></span>
+     </nav>
+     {% bootstrap_messages %}
+     <form action="/login" method="POST" class="forms">
+          <h1>
                Login
           </h1>
+          <hr width="100%">
           {% csrf_token %}
-          <label for="{{ form.email.id_for_label }}">Email: </label> <br/>
-          {{ form.email }} <br/>
-          <label for="{{ form.password.id_for_label }}">Senha:</label> <br/>
-          {{ form.password}}
-          <br/>{% if invalidUserOrPassword %}
-               <strong>Usuário ou senha inválidos</strong> <br/>
-          {% endif %}
-           <br/>
-           <!--
-               implementação futura:
-
-          <label a><a href="/forgot">Esqueceu a senha?</a> </label style="font-size: 0px;" > <br/> <br/> 
-          -->
-          <button style="font-size: 20px;" type="submit">Entrar</button></a> <br/> <br/>
-          <label a><a href="/register">Cadastre-se</a> </label>
-     </section></form>
+          {% bootstrap_form form %}
+          {% buttons submit='Login' %}{% endbuttons %}
+          <h5>Ainda não possui um cadastro? Clique <a href="/register">aqui</a> para realizar um agora mesmo!</h5>
+     </form>
 </body>
 </html>

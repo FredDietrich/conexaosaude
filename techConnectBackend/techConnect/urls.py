@@ -11,5 +11,6 @@ urlpatterns = [
     path('twofactor', views.twoFactor, name='twoFactor'),
     path('register', views.register, name='register'),
     path('newcode', views.newcode, name='newcode'),
-    path('logout', views.logout, name='logout')
+    path('logout', views.logout, name='logout'),
+    path('user', views.user, name='user')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -125,3 +125,8 @@ def newcode(request):
 def logout(request):
     request.session['user_email'] = ''
     return HttpResponseRedirect('/')
+
+def user(request):
+    if(not validateLoginTwoFA(request)):
+        return HttpResponseRedirect('/')
+    return render(request, 'user.html')

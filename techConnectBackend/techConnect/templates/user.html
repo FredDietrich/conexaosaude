@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuário</title>
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Conexão Saúde</a>
+        <span class="navbar-text"><a href="/user">Área do usuário</a></span>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div class="card card" style="width: 18rem;">
+                    <img src="/static/images/bloodpressure.png" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Registros de pressão arterial</h5>
+                        <p class="card-text">Registrar e analisar medições de pressão arterial</p>
+                        <a href="/bloodpressure" class="btn btn-primary">Pressão Arterial</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img src="/static/images/vaccine.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Registros de vacinação</h5>
+                        <p class="card-text">Registrar vacinas feitas, e controlar vacinas à fazer.</p>
+                        <a href="/vaccines" class="btn btn-primary">Vacinação</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card" style="width: 18rem;">
+                    <img src="/static/images/glucose.jpg" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Registros de glicose</h5>
+                        <p class="card-text">Registrar e analisar medições de glicose.</p>
+                        <a href="/glucose" class="btn btn-primary">Glicose</a>
+                    </div>
+                </div>
+                <div class="card" style="width: 18rem;">
+                    <img src="/static/images/weight.webp" class="card-img-top">
+                    <div class="card-body">
+                        <h5 class="card-title">Registros de peso e altura</h5>
+                        <p class="card-text">Registrar peso e altura, e verificar IMC.</p>
+                        <a href="/weight" class="btn btn-primary">Peso e Altura</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
