@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de peso e altura</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Conexão Saúde</a>
+        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+            <div class="navbar-nav ml-auto">
+                <span class="navbar-text nav-item"><a href="/user">Área do usuário</a></span>
+                {% if logged_in %}
+                <form action="/logout" method="POST" class="form-inline nav-item">
+                    {% csrf_token %}
+                    {% buttons submit='Sair' %}{% endbuttons %}
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+    <button class="btn btn-success" id="newRegister">Inserir novo registro</button>
+    <div id="weight-form">
+        <form action="/weight" method="POST" class="forms">
+            {% bootstrap_messages %}
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button class="btn btn-primary" type="submit" id="sendRegister">Enviar</button>
+        </form>
+    </div>
+    <div style="text-align: center;">
+        <table style="border: solid; margin: auto;">
+            <tr>
+                <td style="border: solid;">Data do Registro</td>
+                <td style="border: solid;">Peso | Altura</td>
+            </tr>
+            {% for weight_register in page_obj %}
+            <tr style="border: solid;">
+                <td style="border: solid;">{{ weight_register.register_date }}</td>
+                <td style="border: solid;">{{ weight_register.weight }}kg | {{ weight_register.height }}cm</td>
+                <td style="border: solid">
+                    <button type="button" class="btn btn-lg btn-success" data-toggle="popover" title="IMC" data-content="TODO">IMC do registro</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    <div class="fixed-bottom">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item"><a href="?page=1" class="page-link">&laquo; Primeira</a></li>
+                <li class="page-item"><a href="?page={{ page_obj.previous_page_number }}" class="page-link">Anterior</a></li>
+            {% else %}
+                <li class="page-item"><a href="?page=1" class="page-link">&laquo; Primeira</a></li>
+                <li class="page-item disabled"><a href="?page={{ page_obj.current }}" class="page-link">Anterior</a></li>
+            {% endif %}
+            {% for page_number in page_obj.adjusted_elided_pages %}
+                {% if page_number == page_obj.paginator.ELLIPSIS %}
+                    <li class="page-item disabled"><a class="page-link" href="?page={{ page_obj.current }}">{{page_number}}</a></li>
+                {% elif page_number == page_obj.current %}
+                    <li class="page-item disabled"><a class="page-link" href="?page={{ page_obj.current }}">{{page_number}}</a></li>
+                {% else %}
+                    <li class="page-item{% if page_number == page_obj.number %} active{% endif %}"><a href="?page={{ page_number }}" class="page-link">{{page_number}}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if page_obj.has_next %}
+                <li class="page-item"><a href="?page={{ page_obj.next_page_number }}" class="page-link">Próxima</a></li>
+                <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Última&raquo;</a></li>
+            {% else %}
+                <li class="page-item disabled"><a href="?page={{ page_obj.current }}" class="page-link">Próxima</a></li>
+                <li class="page-item"><a href="?page={{ page_obj.paginator.num_pages }}" class="page-link">Última&raquo;</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    <script>
+        $(function () {
+            $('[data-toggle="popover"]').popover();
+            $('#newRegister').click( () => {
+                $('#weight-form').toggle(500);
+            } );
+            $('#sendRegister').click( () => {
+                $('#weight-form').toggle(500);
+            } );
+        })
+    </script>
+</body>
+
+</html>

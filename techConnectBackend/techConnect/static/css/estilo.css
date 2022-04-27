@@ -24,9 +24,14 @@ footer {
      height: auto;
      text-align: center;
      margin: auto;
-     margin-top: 10%;
+     margin-top: 3%;
      border: 1px solid;
      border-radius: 15px;
      padding: 2% 2% 0% 2%;
+     margin-bottom: 50px;
      box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.52);
+}
+
+.registers {
+     margin: auto;
 }
