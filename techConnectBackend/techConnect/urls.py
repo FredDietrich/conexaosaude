@@ -13,9 +13,9 @@ urlpatterns = [
     path('newcode', views.newcode, name='newcode'),
     path('logout', views.logout, name='logout'),
     path('user', views.user, name='user'),
-    #path('bloodpressure', views.bloodpressure, name='bloodpressure'),
-    #path('glucose', views.glucose, name='glucose'),
+    path('bloodpressure', views.bloodpressure, name='bloodpressure'),
+    path('glucose', views.glucose, name='glucose'),
     path('weight', views.weight, name='weight'),
-    #path('vaccines', views.vaccines, name='vaccines')
-
+    path('vaccines', views.vaccines, name='vaccines'),
+    path('changevaccinestatus', views.changevaccinestatus, name='changevaccinestatus')
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

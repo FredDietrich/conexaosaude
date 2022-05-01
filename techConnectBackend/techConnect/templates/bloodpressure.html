@@ -1,14 +1,98 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Conexão Saúde</a>
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <div class="navbar-nav ml-auto">
-            <span class="navbar-text nav-item"><a href="/user">Área do usuário</a></span>
-            {% if logged_in %}
-            <form action="/logout" method="POST" class="form-inline nav-item">
-                {% csrf_token %}
-                {% buttons submit='Sair' %}{% endbuttons %}
-            </form>
-            {% endif %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de pressão arterial</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    {% load extras %}
+</head>
+
+<body>
+    {% navbar %}
+    {% bootstrap_messages %}
+    <h1 class="display-4" style="text-align: center">Registros de pressão arterial</h1> <br/>
+    <div class="modal fade" id="bloodpressureFormModal" tabindex="-1" role="dialog"
+        aria-labelledby="bloodpressureFormModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bloodpressureFormModalLabel">Incluindo novo registro de pressão arterial
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" action="/bloodpressure" method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_field form.note %}
+                        <div class="input-group mb-3">
+                            <input type="text" name="pa_sistolica" class="form-control" placeholder="PA sistólica" required id="id_pa_sistolica">
+                            <div class="input-group-append">
+                                <span class="input-group-text">por</span>
+                            </div>
+                            <input type="text" name="pa_diastolica" class="form-control" placeholder="PA diastolica" required id="id_pa_diastolica">
+                        </div>
+                        <span>Exemplo: 12 por 8</span>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="saveForm">Salvar</button>
+                </div>
+            </div>
         </div>
     </div>
-</nav>
+    <div style="text-align: center;">
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th scope="col">Data do Registro</th>
+                <th scope="col">Pa Sistolica</th>
+                <th scope="col">Pa Diastolica</th>
+                <th scope="col">Descrição do Registro</th>
+                <th scope="col">Medida final</th>
+                <th scope="col">
+                    <button type="button" class="btn btn-md btn-success" data-toggle="modal"
+                        data-target="#bloodpressureFormModal">+ Registro</button>
+                </th>
+            </tr>
+            {% for bloodpressure_register in page_obj %}
+            <tr>
+                <td>{{ bloodpressure_register.register_date }}</td>
+                <td>{{ bloodpressure_register.pa_sistolica }}</td>
+                <td>{{ bloodpressure_register.pa_diastolica }}</td>
+                <td>
+                    <a tabindex="0" class="btn btn-sm btn-primary" data-toggle="popover" title="Nota do registro"
+                        data-content="{{ bloodpressure_register.note }}">Visualizar nota</a>
+                </td>
+                <td>
+                    {{bloodpressure_register.calculo_pressao}}mm/Hg
+                    {% if bloodpressure_register.calculo_pressao < 70 %} (Baixa) {% elif
+                        bloodpressure_register.calculo_pressao> 105 %}
+                        (Alta)
+                        {% else %}
+                        (Normal)
+                        {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% pagination %}
+    <script>
+        $('[data-toggle="popover"]').popover({
+            trigger: 'focus'
+        });
+        $('#saveForm').click(() => {
+            $('#form').submit();
+        })
+    </script>
+</body>
+
+</html>

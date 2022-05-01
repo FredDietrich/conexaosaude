@@ -1,14 +1,93 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Conexão Saúde</a>
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <div class="navbar-nav ml-auto">
-            <span class="navbar-text nav-item"><a href="/user">Área do usuário</a></span>
-            {% if logged_in %}
-            <form action="/logout" method="POST" class="form-inline nav-item">
-                {% csrf_token %}
-                {% buttons submit='Sair' %}{% endbuttons %}
-            </form>
-            {% endif %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de glicose</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    {% load extras %}
+</head>
+
+<body>
+    {% navbar %}
+    {% bootstrap_messages %}
+    <h1 class="display-4" style="text-align: center">Registros de glicose</h1> <br/>
+    <div class="modal fade" id="glucoseFormModal" tabindex="-1" role="dialog" aria-labelledby="glucoseFormModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="glucoseFormModalLabel">Incluindo novo registro de glicose</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" action="/glucose" method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_form form %} <br />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="saveForm">Salvar</button>
+                </div>
+            </div>
         </div>
     </div>
-</nav>
+    <div style="text-align: center;">
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th scope="col">Data do Registro</th>
+                <th scope="col">Valor Registrado (mg/dl)</th>
+                <th scope="col">Descrição do registro</th>
+                <th scope="col">
+                    <button type="button" class="btn btn-md btn-success" data-toggle="modal"
+                        data-target="#glucoseFormModal">+ Registro</button>
+                </th>
+            </tr>
+            {% for glucose_register in page_obj %}
+            <tr>
+                <td>{{ glucose_register.register_date }}</td>
+                <td>{{ glucose_register.registered_value }}mg/dl </td>
+                <td>
+                    <a tabindex="0" class="btn btn-sm btn-primary" data-toggle="popover" title="Nota do registro"
+                        data-content="{{ glucose_register.note }}">Visualizar nota</a>
+                </td>
+                <td>
+                    <a tabindex="0" class="btn btn-sm btn-success" data-toggle="popover"
+                        title="Informações sobre o registro" data-content="
+                    {% if glucose_register.registered_value < 100 %}
+                        Valor normal para pessoa em jejum, e para medições após 2h de uma refeição.
+                    {% elif glucose_register.registered_value <= 125  %}
+                        Valor considerado alterado para pessoas em jejum, mas normal para medições após 2h de uma refeição.
+                    {% elif glucose_register.registered_value < 200 %}
+                        Valor considerado como Diabetes para pessoas em jejum, mas normal para medições após 2h de uma refeição.
+                    {% elif glucose_register.registered_value >= 200 %}
+                        Valor considerado como Diabetes, para pessoas em jejum, assim como para medições após 2h de uma refeição.
+                    {% endif %}
+                    <br />
+                    <a href='https://www.tuasaude.com/como-medir-a-glicemia/' target='_blank'>Fonte.</a>
+                    " data-html="true">Mais informações</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% pagination %}
+    <script>
+        $('[data-toggle="popover"]').popover({
+            trigger: 'focus'
+        });
+        $('#saveForm').click(() => {
+            $('#form').submit();
+        })
+    </script>
+</body>
+
+</html>

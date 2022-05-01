@@ -27,6 +27,8 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET', '')
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 

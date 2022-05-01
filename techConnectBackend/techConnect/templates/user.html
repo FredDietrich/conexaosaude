@@ -9,27 +9,15 @@
     {% load bootstrap4 %}
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
+    {% load extras %}
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Conexão Saúde</a>
-        <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <div class="navbar-nav ml-auto">
-                <span class="navbar-text nav-item"><a href="/user">Área do usuário</a></span>
-                {% if logged_in %}
-                <form action="/logout" method="POST" class="form-inline nav-item">
-                    {% csrf_token %}
-                    {% buttons submit='Sair' %}{% endbuttons %}
-                </form>
-                {% endif %}
-            </div>
-        </div>
-    </nav>
+    {% navbar %}
     <div class="container">
         <div class="row">
             <div class="col">
-                <div class="card card" style="width: 18rem;">
+                <div class="card" style="width: 18rem;">
                     <img src="/static/images/bloodpressure.png" class="card-img-top">
                     <div class="card-body">
                         <h5 class="card-title">Registros de pressão arterial</h5>

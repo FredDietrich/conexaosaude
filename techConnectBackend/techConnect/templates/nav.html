@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Conexão Saúde</a>
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <div class="navbar-nav ml-auto">
+            <div class="dropleft">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="userArea" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Área do usuário
+                </button>
+                <div class="dropdown-menu" aria-labelledby="userArea">
+                    <a class="dropdown-item" href="/user">Menu do usuário</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="/glucose">Registros de glicose</a>
+                    <a class="dropdown-item" href="/weight">Registros de peso e altura</a>
+                    <a class="dropdown-item" href="/vaccines">Registros de vacinação</a>
+                    <a class="dropdown-item" href="/bloodpressure">Registros de pressão</a>
+                    <div class="dropdown-divider"></div>
+                    <form action="/logout" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="dropdown-item">Sair</button>
+                    </form>
+                </div>
+              </div>
+        </div>
+    </div>
+</nav>

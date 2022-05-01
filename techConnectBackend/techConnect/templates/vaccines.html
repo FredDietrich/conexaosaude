@@ -1,14 +1,97 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Conexão Saúde</a>
-    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-        <div class="navbar-nav ml-auto">
-            <span class="navbar-text nav-item"><a href="/user">Área do usuário</a></span>
-            {% if logged_in %}
-            <form action="/logout" method="POST" class="form-inline nav-item">
-                {% csrf_token %}
-                {% buttons submit='Sair' %}{% endbuttons %}
-            </form>
-            {% endif %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registros de Vacinas</title>
+    <link rel="stylesheet" href="/static/css/estilo.css">
+    {% load bootstrap4 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='full' %}
+    {% load extras %}
+</head>
+
+<body>
+    {% navbar %}
+    {% bootstrap_messages %}
+    <h1 class="display-4" style="text-align: center">Registros de vacinas<button class="float-left btn btn-primary" style="margin-top: 1.5%;">Mais informações sobre as vacinas do Brasil</button></h1> <br/>
+    <div class="modal fade" id="vaccineFormModal" tabindex="-1" role="dialog" aria-labelledby="vaccineFormModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="vaccineFormModalLabel">Incluindo novo registro de vacina</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" action="/vaccines" method="POST">
+                        {% csrf_token %}
+                        {% bootstrap_form form %} <br />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" id="saveForm">Salvar</button>
+                </div>
+            </div>
         </div>
     </div>
-</nav>
+    <div style="text-align: center;">
+        <table class="table table-hover table-bordered">
+            <tr>
+                <th scope="col">Data do Registro</th>
+                <th scope="col">Nome da vacina</th>
+                <th scope="col">Data da aplicação</th>
+                <th scope="col">Vacina aplicada</th>
+                <th scope="col">Descrição da aplicação</th>
+                <th scope="col">
+                    <a tabindex="0" class="btn btn-md btn-success" data-toggle="modal" data-target="#vaccineFormModal">+
+                        Registro</a>
+                </th>
+            </tr>
+            {% for vaccine_register in page_obj %}
+            <tr>
+                <td>{{ vaccine_register.register_date }}</td>
+                <td>{{ vaccine_register.vaccine_name }}</td>
+                <td>{{ vaccine_register.aplication_date }}</td>
+                <td>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <form action="/changevaccinestatus" method="POST" id="changevaccinestatusform">
+                                    {% csrf_token %}
+                                    <input type="hidden" value="{{ vaccine_register.id }}" name="id">
+                                    <input type="checkbox" name="new_status" onchange="submitChangeVaccineStatusForm()" id="id_new_status" {% if vaccine_register.aplicated %}checked{% endif %}>
+                                </form>
+                            </div>
+                            <input type="text" class="form-control" disabled value="Aplicada?">
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <a tabindex="0" class="btn btn-sm btn-primary" data-toggle="popover" title="Nota do registro"
+                        data-content="{{ vaccine_register.note }}">Visualizar nota</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% pagination %}
+    <script>
+        $('[data-toggle="popover"]').popover({
+            trigger: 'focus'
+        });
+        $('#saveForm').click(() => {
+            $('#form').submit();
+        })
+        const submitChangeVaccineStatusForm = () => {
+            $('#changevaccinestatusform').submit();
+        }
+    </script>
+</body>
+
+</html>

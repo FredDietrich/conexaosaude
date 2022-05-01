@@ -18,10 +18,13 @@ class Client(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 class Vaccine(models.Model):
-    title = models.CharField(max_length=150)
-    expected_date = models.DateField()
-    applied_date = models.DateTimeField()
+    vaccine_name = models.CharField(max_length=150)
+    register_date = models.DateTimeField()
+    note = models.CharField(max_length=150)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
+    aplication_date = models.DateTimeField()
+    aplicated = models.BooleanField()
+
 
 class Diabetes(models.Model):
     note = models.CharField(max_length=150)
@@ -34,10 +37,13 @@ class Measurement(models.Model):
     weight = models.FloatField()
     height = models.FloatField()
     register_date = models.DateTimeField()
+    imc = models.FloatField()
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
-class BloodPressure(models.Model):
+class BloodPressures(models.Model):
     note = models.CharField(max_length=150)
-    registered_value = models.FloatField()
+    pa_sistolica = models.FloatField()
+    pa_diastolica = models.FloatField()
+    calculo_pressao = models.FloatField()
     register_date = models.DateTimeField()
     client = models.ForeignKey(Client, on_delete=models.CASCADE)

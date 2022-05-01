@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,38 +10,23 @@
      {% load bootstrap4 %}
      {% bootstrap_css %}
      {% bootstrap_javascript jquery='full' %}
+     {% load extras %}
 </head>
-<body>
-     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <a class="navbar-brand" href="/">Conexão Saúde</a>
-          <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-              <div class="navbar-nav ml-auto">
-                  <span class="navbar-text nav-item"><a href="/user">Área do usuário</a></span>
-                  {% if logged_in %}
-                  <form action="/logout" method="POST" class="form-inline nav-item">
-                      {% csrf_token %}
-                      {% buttons submit='Sair' %}{% endbuttons %}
-                  </form>
-                  {% endif %}
-              </div>
-          </div>
-      </nav>
-          <h1 style="text-align: center; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;" > <u></u>
-               
-          </h1>
-          {% if logged_in %}
-               <form action="/twofactor" method="POST" class="forms">
-                    <h3>Validar código</h3>
-          <h3></h3>
-          <hr width="100%">
 
-                    {% csrf_token %}
-                    {% bootstrap_label "Insira o código recebido:" label_for="form.code" %}
-                    {% bootstrap_field form.code show_label=False %}
-                    {% buttons submit='Enviar' %}{% endbuttons %}
-                    <label a><a href="/login">Voltar</a> </label>
-               </form>
-               {% if invalid_code %}
+<body>
+     {% navbar %}
+     {% if logged_in %}
+          <form action="/twofactor" method="POST" class="forms">
+               <h3>Validar código</h3>
+               <hr width="100%">
+
+               {% csrf_token %}
+               {% bootstrap_label "Insira o código recebido:" label_for="form.code" %}
+               {% bootstrap_field form.code show_label=False %}
+               {% buttons submit='Enviar' %}{% endbuttons %}
+               <label a><a href="/login">Voltar</a> </label>
+          </form>
+          {% if invalid_code %}
                <form action="/newcode" method="POST" class="forms">
                     {% csrf_token %}
                     <button type="submit">Reenviar código</button>
@@ -48,9 +34,8 @@
                     {% bootstrap_form form %}
                     {% buttons submit='Enviar' %}{% endbuttons %}
                </form>
-               {% endif %}
-          {% else %}
-               <strong>Por favor faça login!</strong> <br/>
           {% endif %}
+     {% endif %}
 </body>
+
 </html>
