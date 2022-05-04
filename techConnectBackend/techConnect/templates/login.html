@@ -13,7 +13,7 @@
 </head>
 <body>
      {% navbar %}
-     <form action="/login" method="POST" class="forms" id="form">
+     <form action="{% url 'login' %}" method="POST" class="forms" id="form">
           <h1>
                Login
           </h1>
@@ -21,7 +21,7 @@
           {% csrf_token %}
           {% bootstrap_form form %}
           {% buttons submit='Login' %}{% endbuttons %}
-          <h5>Ainda não possui um cadastro? Clique <a href="/register">aqui</a> para cadastrar-se.</h5>
+          <h5>Ainda não possui um cadastro? Clique <a href="{% url 'register' %}">aqui</a> para cadastrar-se.</h5>
      </form>
 </body>
 </html>

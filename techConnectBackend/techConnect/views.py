@@ -99,13 +99,13 @@ def twoFactor(request):
                 user=user, exp_date__gte=date)
             if(len(foundCodes) < 1):
                 form.add_error('code', 'Código inválido.')
-                return render(request, 'twofactor.html', {'form': form, 'logged_in': True})
+                return render(request, 'twofactor.html', {'form': form, 'logged_in': True, 'invalid_code' : True})
             for foundCode in foundCodes:
                 if foundCode.code == code:
                     request.session['twofa'] = True
                     return HttpResponseRedirect('/user')
             form.add_error('code', 'Código inválido.')
-            return render(request, 'twofactor.html', {'form': form, 'logged_in': True})
+            return render(request, 'twofactor.html', {'form': form, 'logged_in': True, 'invalid_code' : True})
     else:
         form = TwoFactor()
     return render(request, 'twofactor.html', {'form': form, 'logged_in': True})
@@ -144,7 +144,7 @@ def newcode(request):
     if(not validateLogin(request)):
         return HttpResponseRedirect('/login')
     if request.method == 'POST':
-        user = getSessionUser[request]
+        user = getSessionUser(request)
         exp_date = (datetime.utcnow() - timedelta(hours=3)) + \
             timedelta(hours=12)
         code = generateRandomCode()

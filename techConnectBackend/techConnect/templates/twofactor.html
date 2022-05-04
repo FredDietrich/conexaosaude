@@ -15,27 +15,27 @@
 
 <body>
      {% navbar %}
-     {% if logged_in %}
-          <form action="/twofactor" method="POST" class="forms">
-               <h3>Validar código</h3>
-               <hr width="100%">
-
-               {% csrf_token %}
-               {% bootstrap_label "Insira o código recebido:" label_for="form.code" %}
-               {% bootstrap_field form.code show_label=False %}
-               {% buttons submit='Enviar' %}{% endbuttons %}
-               <label a><a href="/login">Voltar</a> </label>
-          </form>
+     <form action="{% url 'twoFactor' %}" method="POST" class="forms">
+          <h3>Validar código</h3>
+          <hr width="100%">
+          {% csrf_token %}
+          {% bootstrap_label "Insira o código recebido:" label_for="form.code" %}
+          {% bootstrap_field form.code show_label=False %}
+          {% buttons submit='Enviar' %}{% endbuttons %}
           {% if invalid_code %}
-               <form action="/newcode" method="POST" class="forms">
-                    {% csrf_token %}
-                    <button type="submit">Reenviar código</button>
-                    {% csrf_token %}
-                    {% bootstrap_form form %}
-                    {% buttons submit='Enviar' %}{% endbuttons %}
-               </form>
+               <a class="btn btn-primary" id="newCode">Receber código novamente</a><br />
           {% endif %}
-     {% endif %}
+          <label a><a href="/login">Voltar</a> </label>
+     </form>
+
+     <form action="{% url 'newcode' %}" method="POST" id="newCodeForm">
+          {% csrf_token %}
+     </form>
+     <script>
+          $('#newCode').click(() => {
+               $('#newCodeForm').submit();
+          });
+     </script>
 </body>
 
 </html>

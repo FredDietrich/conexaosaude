@@ -22,7 +22,7 @@ class Vaccine(models.Model):
     register_date = models.DateTimeField()
     note = models.CharField(max_length=150)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    aplication_date = models.DateTimeField()
+    aplication_date = models.DateField()
     aplicated = models.BooleanField()
 
 

@@ -29,7 +29,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="form" action="/bloodpressure" method="POST">
+                    <form id="form" action="{% url 'bloodpressure' %}" method="POST">
                         {% csrf_token %}
                         {% bootstrap_field form.note %}
                         <div class="input-group mb-3">
